@@ -20,6 +20,7 @@ func main() {
 	}
 	defer file.Close()
 
+	//escribir en el csv
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
