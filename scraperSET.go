@@ -9,10 +9,10 @@ import (
 )
 
 func main() {
-	//create file
+	//crear archivo donde se guarda losdatos temporalmente
 	fName := "set.csv"
 	file, err := os.Create(fName)
-	//check errors during the creating process
+	//comprobar errores durante la creacion del archivo
 	if err != nil {
 		log.Fatalf("No se puede leer el archivo. error :%q", err)
 		return
@@ -23,11 +23,12 @@ func main() {
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
+	//dominios permitidos al scraper
 	c := colly.NewCollector(
-		colly.AllowedDomains("www.set.gov.py"),
+		colly.AllowedDomains("set.gov.py"),
 	)
-
-	c.OnHTML(".internship_meta", func(e *colly.HTMLElement) {
+	//localizamos donde se encuentra la informacion en la tabla
+	c.OnHTML(".chico", func(e *colly.HTMLElement) {
 
 		writer.Write([]string{
 			e.ChildText("table"),
