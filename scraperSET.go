@@ -26,15 +26,14 @@ func main() {
 
 	//dominios permitidos al scraper
 	c := colly.NewCollector(
-		colly.AllowedDomains("set.gov.py"),
+		colly.AllowedDomains("set.gov.py", "www.set.gov.py"),
 	)
 	//localizamos donde se encuentra la informacion en la tabla
 	c.OnHTML(".chico", func(e *colly.HTMLElement) {
-
 		writer.Write([]string{
 			// titles = tabla.find('tr')  # titulos
 			// valores = tabla.findAll('tr', class_="chico")  # valores
-			e.ChildText("td"),
+			e.Attr("style"),
 		})
 	})
 
@@ -61,12 +60,10 @@ func main() {
 	//     url = aux1.replace("mes1", month)
 	//     print(url)
 
-	for i := 0; i < 10; i++ {
-		fmt.Printf("scraped page: %d\n", i+1)
-		c.Visit("https://www.set.gov.py/portal/PARAGUAY-SET/detail?folder-id=repository:collaboration:/sites/PARAGUAY-SET/categories/SET/Informes%20Periodicos/cotizaciones-historicos/2010&content-id=/repository/collaboration/sites/PARAGUAY-SET/documents/informes-periodicos/cotizaciones/2010/a-mes-de-enero")
-	}
+	fmt.Printf("scraping...")
+	c.Visit("https://www.set.gov.py/portal/PARAGUAY-SET/detail?folder-id=repository:collaboration:/sites/PARAGUAY-SET/categories/SET/Informes%20Periodicos/cotizaciones-historicos/2010&content-id=/repository/collaboration/sites/PARAGUAY-SET/documents/informes-periodicos/cotizaciones/2010/a-mes-de-enero")
 
-	log.Printf("scraped completo\n")
+	log.Printf("scraping completo\n")
 	log.Println(c)
 
 }
